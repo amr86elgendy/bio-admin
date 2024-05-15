@@ -12,7 +12,6 @@ import { TProduct } from '@/global';
 type GetProductsReturnType = {
   currentPage: number;
   lastPage: number;
-  pageCount: number;
   products: TProduct[];
   totalCount: number;
 };

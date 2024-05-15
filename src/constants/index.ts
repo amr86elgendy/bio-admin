@@ -8,3 +8,12 @@ export const DOSAGE_FORMS = [
   'oral',
   'injection',
 ] as const;
+
+export const ORDER_STATUS = [
+  'pending',
+  'failed',
+  'paid',
+  'shipped',
+  'delivered',
+  'canceled',
+] as const;

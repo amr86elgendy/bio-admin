@@ -1,17 +1,13 @@
 import { ColumnDef } from '@tanstack/react-table';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 
 import { DataTableColumnHeader } from './table/columnHeader';
 import { DataTableRowActions } from './table/rowActions';
-import { TUser } from '@/global';
+import { TOrder } from '@/global';
 
-dayjs.extend(relativeTime);
-
-export const columns: ColumnDef<TUser>[] = [
+export const columns: ColumnDef<TOrder>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -37,50 +33,60 @@ export const columns: ColumnDef<TUser>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'name',
+    accessorKey: 'user',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='name' />
+      <DataTableColumnHeader column={column} title='customer' />
     ),
     cell: ({ row }) => {
-      const customer = row.original;
+      const order = row.original;
       return (
-        <>
+        <div className='ml-4'>
           <div className='text-sm font-medium text-gray-900 line-clamp-1'>
-            {customer.name}
+            {order.user.name}
           </div>
-          <span className='text-xs text-gray-600'>{customer._id}</span>
-        </>
+          <div className='text-sm text-gray-500 line-clamp-1'>
+            {order.user.email}
+          </div>
+        </div>
       );
+    },
+    filterFn: (row, id, value) => {
+      console.log({ row, id, value });
+      
+      return row.original.user.name.includes(value);
     },
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: 'email',
+    accessorKey: 'status',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='email' />
+      <DataTableColumnHeader column={column} title='status' />
     ),
-    cell: ({ row }) => <Badge variant='outline'>{row.original.email}</Badge>,
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-    enableSorting: false,
-  },
-  {
-    accessorKey: 'createdAt',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='subscription time' />
-    ),
-    cell: ({ row }) => {
-      const formattedDate = dayjs(row.original.createdAt).fromNow();
-      return <span className='font-semibold text-gray-600'>{formattedDate}</span>;
-    },
+    cell: ({ row }) => <Badge variant='outline'>{row.original.status}</Badge>,
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
     enableSorting: false,
   },
 
+  {
+    accessorKey: 'total',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='total price' />
+    ),
+    cell: ({ getValue }) => {
+      const formatted = new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'EGP',
+      }).format(getValue() as number);
+
+      return <span className='font-semibold text-gray-700'>{formatted}</span>;
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+  },
   {
     id: 'actions',
     cell: ({ row }) => <DataTableRowActions row={row} />,

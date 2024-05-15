@@ -98,7 +98,8 @@ export const columns: ColumnDef<TProduct>[] = [
       return <div className='text-gray-800 font-semibold'>{category}</div>;
     },
     filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
+      const rowCategories: TProduct['category'] = row.getValue(id);
+      return rowCategories.map((cat) => cat._id).some((v) => value.includes(v));
     },
     enableSorting: false,
   },

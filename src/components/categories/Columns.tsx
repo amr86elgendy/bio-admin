@@ -2,16 +2,15 @@ import { ColumnDef } from '@tanstack/react-table';
 import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
-import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 
 import { DataTableColumnHeader } from './table/columnHeader';
 import { DataTableRowActions } from './table/rowActions';
-import { TUser } from '@/global';
+import { TCategory } from '@/global';
 
 dayjs.extend(relativeTime);
 
-export const columns: ColumnDef<TUser>[] = [
+export const columns: ColumnDef<TCategory>[] = [
   {
     id: 'select',
     header: ({ table }) => (
@@ -42,45 +41,30 @@ export const columns: ColumnDef<TUser>[] = [
       <DataTableColumnHeader column={column} title='name' />
     ),
     cell: ({ row }) => {
-      const customer = row.original;
+      const product = row.original;
       return (
-        <>
-          <div className='text-sm font-medium text-gray-900 line-clamp-1'>
-            {customer.name}
-          </div>
-          <span className='text-xs text-gray-600'>{customer._id}</span>
-        </>
+        <div className='text-sm font-medium text-gray-900 line-clamp-1'>
+          {product.name}
+        </div>
       );
     },
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: 'email',
+    accessorKey: 'productsCount',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='email' />
+      <DataTableColumnHeader column={column} title='products count' />
     ),
-    cell: ({ row }) => <Badge variant='outline'>{row.original.email}</Badge>,
+    cell: ({ row }) => (
+      <span className='inline-flex px-2 font-semibold leading-5 text-green-800 bg-purple-100 rounded-full'>
+        {row.original.productsCount}
+      </span>
+    ),
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
-    enableSorting: false,
   },
-  {
-    accessorKey: 'createdAt',
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='subscription time' />
-    ),
-    cell: ({ row }) => {
-      const formattedDate = dayjs(row.original.createdAt).fromNow();
-      return <span className='font-semibold text-gray-600'>{formattedDate}</span>;
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
-    enableSorting: false,
-  },
-
   {
     id: 'actions',
     cell: ({ row }) => <DataTableRowActions row={row} />,

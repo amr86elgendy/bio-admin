@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import { APP_COMPANIES, DOSAGE_FORMS } from './constants';
+import { APP_COMPANIES, DOSAGE_FORMS, ORDER_STATUS } from './constants';
 
 declare module '@tanstack/react-query' {
   interface Register {
@@ -23,9 +23,9 @@ export type TProduct = {
   images: { url: string; name: string; size: number }[];
   description: string;
   nutritionFacts: string;
-  company: typeof APP_COMPANIES[number];
-  itemForm: typeof DOSAGE_FORMS[number];
-  category: { name: string; _id: string }[];
+  company: (typeof APP_COMPANIES)[number];
+  itemForm: (typeof DOSAGE_FORMS)[number];
+  category: Partial<TCategory>[];
   freeShipping: boolean;
   numReviews: number;
   averageRating: number;
@@ -33,6 +33,45 @@ export type TProduct = {
   quantity: number;
   featured: boolean;
   sold: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TCategory = {
+  _id: string;
+  name: string;
+  slug: string;
+  productsCount: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+export type TOrder = {
+  _id: string;
+  shippingAddress: {
+    street: string;
+    city: string;
+    state: string;
+  };
+  user: {
+    _id: string;
+    name: string;
+    email: string;
+  };
+  orderItems: [
+    {
+      product: string;
+      amount: number;
+      price: number;
+      name: string;
+      image: string;
+      _id: string;
+    }
+  ];
+  shippingFee: number;
+  subtotal: number;
+  total: number;
+  status: (typeof ORDER_STATUS)[number];
   createdAt: string;
   updatedAt: string;
 };
