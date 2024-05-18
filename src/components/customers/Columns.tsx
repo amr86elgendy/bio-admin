@@ -67,13 +67,26 @@ export const columns: ColumnDef<TUser>[] = [
     enableSorting: false,
   },
   {
+    accessorKey: 'ordersCount',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='orders count' />
+    ),
+    cell: ({ row }) => (
+      <span className='px-2 font-semibold leading-5 text-green-800 bg-purple-100 rounded-full'>
+        {row.original.ordersCount}
+      </span>
+    ),
+  },
+  {
     accessorKey: 'createdAt',
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title='subscription time' />
     ),
     cell: ({ row }) => {
       const formattedDate = dayjs(row.original.createdAt).fromNow();
-      return <span className='font-semibold text-gray-600'>{formattedDate}</span>;
+      return (
+        <span className='font-semibold text-gray-600'>{formattedDate}</span>
+      );
     },
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));

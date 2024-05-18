@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { request } from '../client';
 import { TUser } from '@/global';
 
@@ -63,5 +63,32 @@ const updateUser = async ({
 export function useUpdateUser() {
   return useMutation({
     mutationFn: updateUser,
+  });
+}
+
+// ####################### Block User #######################
+const blockUser = async ({
+  blocked,
+  id,
+}: {
+  blocked: boolean;
+  id: string | undefined;
+}) => {
+  const { data } = await request({
+    url: 'users/block',
+    method: 'PUT',
+    data: { id, blocked },
+  });
+  return data;
+};
+
+export function useBlockUser() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: blockUser,
+    onSettled: () => {
+      // parameters: data, error, variables, context
+      queryClient.invalidateQueries({ queryKey: ['get-users'] });
+    },
   });
 }

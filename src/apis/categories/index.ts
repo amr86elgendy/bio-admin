@@ -102,7 +102,7 @@ export function useDeleteCategory() {
     mutationFn: deleteCategory,
     onSettled: () => {
       // parameters: data, error, variables, context
-      queryClient.invalidateQueries({ queryKey: ['get-categorys'] });
+      queryClient.invalidateQueries({ queryKey: ['get-categories'] });
     },
   });
 }

@@ -1,4 +1,6 @@
 import { Row } from '@tanstack/react-table';
+import { Ellipsis, SquarePen, Trash2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -9,10 +11,13 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { Ellipsis, SquarePen } from 'lucide-react';
-import { Link } from 'react-router-dom';
 // import { DeleteCategoryModal } from '@/lib/deleteModal';
 import { TCategory } from '@/global';
+import DeleteModal from '@/lib/deleteModal';
+import { useGlobalStore } from '@/store/global';
+import { useDeleteCategory } from '@/apis/categories';
+import { toast } from '@/components/ui/use-toast';
+('@/lib/deleteModal');
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -21,8 +26,39 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions({
   row,
 }: DataTableRowActionsProps<TCategory>) {
-  const category = row.original
+  const category = row.original;
+  const toggleDeleteModal = useGlobalStore.getState().toggleDeleteModal;
 
+  const deleteCategory = useDeleteCategory();
+
+  function handleDelete() {
+    if (category.productsCount > 0) {
+      toast({
+        variant: 'destructive',
+        title: 'Warning',
+        description: `There are ${category.productsCount} products related to this category, if you want to delete this category, you have to Edit these products`,
+      });
+    } else {
+      toggleDeleteModal();
+    }
+  }
+
+  function callback() {
+    deleteCategory.mutate(
+      { id: category._id },
+      {
+        onSuccess: (data) => {
+          toggleDeleteModal();
+          toast({
+            variant: 'success',
+            title: 'Success',
+            description: data.msg,
+          });
+        },
+      }
+    );
+  }
+  
   return (
     <>
       <DropdownMenu>
@@ -39,18 +75,17 @@ export function DataTableRowActions({
               <span className='capitalize'>edit</span>
             </Link>
           </DropdownMenuItem>
-          {/* <DropdownMenuSeparator />
-
+          <DropdownMenuSeparator />
           <DropdownMenuItem
             className='text-destructive focus:bg-destructive/5 focus:text-destructive'
-            onClick={() => toggleDeleteModal()}
+            onClick={handleDelete}
           >
             <Trash2 size={20} className='mr-2' />
             <span className='capitalize'>delete</span>
-          </DropdownMenuItem> */}
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      {/* <DeleteCategoryModal id={category._id} /> */}
+      <DeleteModal loading={deleteCategory.isPending} callback={callback} />
     </>
   );
 }

@@ -11,9 +11,11 @@ import {
 
 import { Ellipsis, SquarePen, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { DeleteProductModal } from '@/lib/deleteModal';
+import DeleteModal from '@/lib/deleteModal';
 import { useGlobalStore } from '@/store/global';
 import { TProduct } from '@/global';
+import { useDeleteProduct } from '@/apis/products';
+import { toast } from '@/components/ui/use-toast';
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -22,8 +24,26 @@ interface DataTableRowActionsProps<TData> {
 export function DataTableRowActions({
   row,
 }: DataTableRowActionsProps<TProduct>) {
-  const product = row.original
+  const product = row.original;
   const toggleDeleteModal = useGlobalStore.getState().toggleDeleteModal;
+
+  const deleteProduct = useDeleteProduct();
+
+  function callback() {
+    deleteProduct.mutate(
+      { id: product._id },
+      {
+        onSuccess: (data) => {
+          toggleDeleteModal();
+          toast({
+            variant: 'success',
+            title: 'Success',
+            description: data.msg,
+          });
+        },
+      }
+    );
+  }
 
   return (
     <>
@@ -52,7 +72,10 @@ export function DataTableRowActions({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <DeleteProductModal id={product._id} />
+      <DeleteModal
+        loading={deleteProduct.isPending}
+        callback={callback}
+      />
     </>
   );
 }

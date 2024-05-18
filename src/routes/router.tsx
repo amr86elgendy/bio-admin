@@ -10,11 +10,10 @@ import LoginPage from '@/components/auth';
 import HomePage from '@/components/dashboard';
 import OrdersPage from '@/components/orders';
 import CustomersPage from '@/components/customers';
-import ProductForm from '@/components/products/Form';
+import CustomerDetails from '@/components/customers/Details';
 import ProductsPage from '@/components/products';
-import UserForm from '@/components/customers/Form';
+import ProductForm from '@/components/products/Form';
 import CategoriesPage from '@/components/categories';
-import CategoriesForm from '@/components/categories/Form';
 import CategoryForm from '@/components/categories/Form';
 
 export const router = createBrowserRouter([
@@ -49,14 +48,14 @@ export const router = createBrowserRouter([
           },
           {
             path: 'categories/create',
-            element: <CategoriesForm />,
+            element: <CategoryForm />,
           },
           { path: 'categories/edit/:categoryId', element: <CategoryForm /> },
           {
             path: 'customers',
             element: <CustomersPage />,
           },
-          { path: 'customers/edit/:userId', element: <UserForm /> },
+          { path: 'customers/details/:userId', element: <CustomerDetails /> },
           {
             path: 'analytics',
             element: <div>analytics</div>,

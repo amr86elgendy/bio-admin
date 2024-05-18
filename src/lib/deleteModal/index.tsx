@@ -1,4 +1,4 @@
-import { Loader2, LoaderCircle } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 
 import {
   AlertDialog,
@@ -11,42 +11,31 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 
-import { useDeleteProduct } from '@/apis/products';
 import { useGlobalStore } from '@/store/global';
-import { toast } from '@/components/ui/use-toast';
 
-export function DeleteProductModal({ id }: { id: string }) {
-  const deleteProduct = useDeleteProduct();
+export default function DeleteModal({
+  loading,
+  callback,
+  warningMessage = 'This action cannot be undone. This will permanently delete your data from our servers.',
+}: {
+  loading: boolean;
+  callback: () => void;
+  warningMessage?: string;
+}) {
   const isDeleteModalOpened = useGlobalStore().isDeleteModalOpened;
   const toggleDeleteModal = useGlobalStore().toggleDeleteModal;
-
-  const onSuccess = (data: { msg: string }) => {
-    toggleDeleteModal()
-    toast({
-      variant: 'success',
-      title: 'Success',
-      description: data.msg,
-    });
-  };
 
   return (
     <AlertDialog open={isDeleteModalOpened} onOpenChange={toggleDeleteModal}>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </AlertDialogDescription>
+          <AlertDialogDescription>{warningMessage}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <Button
-            variant='destructive'
-            disabled={deleteProduct.isPending}
-            onClick={() => deleteProduct.mutate({ id }, { onSuccess })}
-          >
-            {deleteProduct.isPending ? (
+          <Button variant='destructive' disabled={loading} onClick={callback}>
+            {loading ? (
               <>
                 <Loader2 className='mr-2 h-4 w-4 animate-spin' />
                 Please wait

@@ -9,19 +9,39 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { Ellipsis, SquarePen } from 'lucide-react';
+import { Ban, Circle, Ellipsis, SquarePen } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { DeleteProductModal } from '@/lib/deleteModal';
 import { TUser } from '@/global';
+import DeleteModal from '@/lib/deleteModal';
+import { useBlockUser } from '@/apis/customers';
+import { useGlobalStore } from '@/store/global';
+import { toast } from '@/components/ui/use-toast';
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
 }
 
-export function DataTableRowActions({
-  row,
-}: DataTableRowActionsProps<TUser>) {
-  const user = row.original
+export function DataTableRowActions({ row }: DataTableRowActionsProps<TUser>) {
+  const user = row.original;
+  const blockUser = useBlockUser();
+
+  const toggleDeleteModal = useGlobalStore.getState().toggleDeleteModal;
+
+  function callback() {
+    blockUser.mutate(
+      { id: user._id, blocked: !user.blocked },
+      {
+        onSuccess: (data) => {
+          toggleDeleteModal();
+          toast({
+            variant: 'success',
+            title: 'Success',
+            description: data.msg,
+          });
+        },
+      }
+    );
+  }
 
   return (
     <>
@@ -34,23 +54,33 @@ export function DataTableRowActions({
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end'>
           <DropdownMenuItem asChild>
-            <Link to={`edit/${user._id}`}>
+            <Link to={`details/${user._id}`}>
               <SquarePen size={20} className='text-slate-500 mr-2' />
-              <span className='capitalize'>edit</span>
+              <span className='capitalize'>details</span>
             </Link>
           </DropdownMenuItem>
-          {/* <DropdownMenuSeparator />
+          <DropdownMenuSeparator />
 
           <DropdownMenuItem
             className='text-destructive focus:bg-destructive/5 focus:text-destructive'
             onClick={() => toggleDeleteModal()}
           >
-            <Trash2 size={20} className='mr-2' />
-            <span className='capitalize'>delete</span>
-          </DropdownMenuItem> */}
+            {user.blocked ? (
+              <Circle size={20} className='mr-2' />
+            ) : (
+              <Ban size={20} className='mr-2' />
+            )}
+            <span className='capitalize'>
+              {user.blocked ? 'unblock' : 'block'}
+            </span>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      {/* <DeleteProductModal id={user._id} /> */}
+      <DeleteModal
+        loading={blockUser.isPending}
+        callback={callback}
+        warningMessage='Blocking a user restricts their access and communication with you. Ensure this action is necessary and justified.'
+      />
     </>
   );
 }

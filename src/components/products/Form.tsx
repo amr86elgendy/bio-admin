@@ -181,7 +181,6 @@ console.log(dirtyValues, values, form.formState.touchedFields);
             <FormField
               control={form.control}
               name='name'
-              
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>name</FormLabel>
@@ -391,7 +390,9 @@ console.log(dirtyValues, values, form.formState.touchedFields);
               )}
             />
           </div>
-          <Button type='submit'>Submit</Button>
+          <Button type='submit' disabled={!form.formState.isDirty}>
+            Submit
+          </Button>
         </form>
       </Form>
     </>

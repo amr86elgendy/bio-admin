@@ -12,6 +12,8 @@ export type TUser = {
   name: string;
   email: string;
   role: 'admin' | 'user';
+  ordersCount: number;
+  blocked: boolean;
   createdAt: string;
   updatedAt: string;
 };

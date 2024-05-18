@@ -129,9 +129,9 @@ export const columns: ColumnDef<TProduct>[] = [
         {row.original.sold}
       </span>
     ),
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
+    // filterFn: (row, id, value) => {
+    //   return value.includes(row.getValue(id));
+    // },
   },
   {
     accessorKey: 'price',
@@ -146,9 +146,9 @@ export const columns: ColumnDef<TProduct>[] = [
 
       return <span className='font-semibold text-gray-700'>{formatted}</span>;
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
+    // filterFn: (row, id, value) => {
+    //   return value.includes(row.getValue(id));
+    // },
   },
   {
     id: 'actions',
