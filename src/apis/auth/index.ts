@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { jwtDecode } from 'jwt-decode';
 import { request } from '../client';
 import { useAuthStore } from '@/store/auth';
+import { TUser } from '@/global';
 
 export type TLoginResponse = {
   accessToken: string;
@@ -32,12 +33,7 @@ export const refreshAccessTokenFn = async () => {
     const user = jwtDecode<TUser>(data.accessToken);
     useAuthStore.getState().authenticateUser({
       accessToken: data.accessToken,
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
+      user,
     });
   }
   return data;

@@ -36,16 +36,16 @@ export function DataTableRowActions({
         </DropdownMenuTrigger>
         <DropdownMenuContent align='end'>
           <DropdownMenuItem asChild>
-            <Link to={`edit/${order._id}`}>
+            <Link to={`details/${order._id}`}>
               <SquarePen size={20} className='text-slate-500 mr-2' />
-              <span className='capitalize'>edit</span>
+              <span className='capitalize'>details</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
 
           <DropdownMenuItem
             className='text-destructive focus:bg-destructive/5 focus:text-destructive'
-            onClick={() => toggleDeleteModal()}
+            // onClick={() => toggleDeleteModal()}
           >
             <Trash2 size={20} className='mr-2' />
             <span className='capitalize'>delete</span>

@@ -36,7 +36,6 @@ export function DataTableRowActions({
         onSuccess: (data) => {
           toggleDeleteModal();
           toast({
-            variant: 'success',
             title: 'Success',
             description: data.msg,
           });

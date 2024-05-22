@@ -1,37 +1,12 @@
 import { ColumnDef } from '@tanstack/react-table';
 
 import { Badge } from '@/components/ui/badge';
-import { Checkbox } from '@/components/ui/checkbox';
 
 import { DataTableColumnHeader } from './table/columnHeader';
 import { DataTableRowActions } from './table/rowActions';
 import { TOrder } from '@/global';
 
 export const columns: ColumnDef<TOrder>[] = [
-  {
-    id: 'select',
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && 'indeterminate')
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label='Select all'
-        className='translate-y-[2px]'
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label='Select row'
-        className='translate-y-[2px]'
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
   {
     accessorKey: 'user',
     header: ({ column }) => (
@@ -40,7 +15,7 @@ export const columns: ColumnDef<TOrder>[] = [
     cell: ({ row }) => {
       const order = row.original;
       return (
-        <div className='ml-4'>
+        <div className=''>
           <div className='text-sm font-medium text-gray-900 line-clamp-1'>
             {order.user.name}
           </div>
@@ -52,7 +27,7 @@ export const columns: ColumnDef<TOrder>[] = [
     },
     filterFn: (row, id, value) => {
       console.log({ row, id, value });
-      
+
       return row.original.user.name.includes(value);
     },
     enableSorting: false,

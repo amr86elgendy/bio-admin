@@ -137,7 +137,9 @@ export function useDeleteProduct() {
     mutationFn: deleteProduct,
     onSettled: () => {
       // parameters: data, error, variables, context
-      queryClient.invalidateQueries({ queryKey: ['get-products'] });
+      queryClient.invalidateQueries({
+        queryKey: ['get-products'],
+      });
     },
   });
 }

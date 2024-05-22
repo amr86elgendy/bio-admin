@@ -80,7 +80,7 @@ export function DataTable<TData, TValue>({
                       key={header.id}
                       colSpan={header.colSpan}
                       className={cn({
-                        'text-center': header.column.id !== 'name',
+                        'text-center': header.column.id !== 'user',
                       })}
                     >
                       {header.isPlaceholder
@@ -106,7 +106,7 @@ export function DataTable<TData, TValue>({
                     <TableCell
                       key={cell.id}
                       className={cn({
-                        'text-center': cell.column.id !== 'name',
+                        'text-center': cell.column.id !== 'user',
                       })}
                     >
                       {flexRender(
