@@ -82,7 +82,7 @@ export default function CategoryForm() {
   // console.log('form values', form.watch());
 
   return (
-    <>
+    <div className='space-y-8'>
       <div className='flex justify-between items-center'>
         <Button asChild>
           <Link to='/categories' className='space-x-2'>
@@ -115,6 +115,6 @@ export default function CategoryForm() {
           </Button>
         </form>
       </Form>
-    </>
+    </div>
   );
 }

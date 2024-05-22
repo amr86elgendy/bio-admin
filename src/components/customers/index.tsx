@@ -17,7 +17,7 @@ export default function CustomersPage() {
 
   return (
     <>
-      <div className='hidden h-full flex-1 flex-col space-y-8 p-8 md:flex'>
+      <div className='hidden h-full flex-1 flex-col space-y-8 md:flex'>
         <h2 className='capitalize'>customer list</h2>
 
         <DataTable data={usersQuery.data.users} columns={columns} />

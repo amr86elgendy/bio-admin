@@ -1,14 +1,21 @@
 import { Outlet } from 'react-router-dom';
 import HeaderLayout from './Header';
 import SidebarLayout from './Sidebar';
+import { useGlobalStore } from '@/store/global';
 
 export function AppLayout() {
+  const openSidebar = useGlobalStore((state) => state.openSidebar);
   return (
-    <div className='grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]'>
+    <div className=''>
       <SidebarLayout />
-      <div className='flex flex-col'>
+      <div
+        className={`absolute right-0 transition-all duration-500 ${
+          openSidebar ? 'left-64' : 'left-0 sm:left-20'
+        }
+        `}
+      >
         <HeaderLayout />
-        <main className='flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6'>
+        <main className='bg-gray-50 min-h-[calc(100vh-80px)] p-8'>
           <Outlet />
         </main>
       </div>

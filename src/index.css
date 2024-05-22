@@ -80,3 +80,33 @@
     @apply text-xl sm:text-3xl font-semibold
   }
 }
+
+.link:hover a::before,
+.link.selected a::before {
+  content: '';
+  position: absolute;
+  right: 0;
+  background-color: transparent;
+  top: -50px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 35px 35px 0 10px rgb(249 250 251);
+  pointer-events: none;
+  transition: 0.2s;
+}
+.link:hover a::after,
+.link.selected a::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  background-color: transparent;
+  bottom: -50px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  box-shadow: 35px -35px 0 10px rgb(249 250 251);
+  pointer-events: none;
+  transition: 0.2s;
+}
+
