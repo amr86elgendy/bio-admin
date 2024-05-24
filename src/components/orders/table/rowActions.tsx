@@ -23,7 +23,7 @@ export function DataTableRowActions({
   row,
 }: DataTableRowActionsProps<TOrder>) {
   const order = row.original
-  const toggleDeleteModal = useGlobalStore.getState().toggleDeleteModal;
+  // const toggleDeleteModal = useGlobalStore.getState().toggleDeleteModal;
 
   return (
     <>

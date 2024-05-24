@@ -11,12 +11,10 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-// import { DeleteCategoryModal } from '@/lib/deleteModal';
 import { TCategory } from '@/global';
-import DeleteModal from '@/lib/deleteModal';
-import { useGlobalStore } from '@/store/global';
-import { useDeleteCategory } from '@/apis/categories';
 import { toast } from '@/components/ui/use-toast';
+import CategoryAlert from '@/lib/alerts/CategoryAlert';
+import { useState } from 'react';
 ('@/lib/deleteModal');
 
 interface DataTableRowActionsProps<TData> {
@@ -27,9 +25,8 @@ export function DataTableRowActions({
   row,
 }: DataTableRowActionsProps<TCategory>) {
   const category = row.original;
-  const toggleDeleteModal = useGlobalStore.getState().toggleDeleteModal;
-
-  const deleteCategory = useDeleteCategory();
+  
+  const [isCategoryAlertOpened, setCategoryAlert] = useState(false);
 
   function handleDelete() {
     if (category.productsCount > 0) {
@@ -39,25 +36,10 @@ export function DataTableRowActions({
         description: `There are ${category.productsCount} products related to this category, if you want to delete this category, you have to Edit these products`,
       });
     } else {
-      toggleDeleteModal();
+      setCategoryAlert(true);
     }
   }
 
-  function callback() {
-    deleteCategory.mutate(
-      { id: category._id },
-      {
-        onSuccess: (data) => {
-          toggleDeleteModal();
-          toast({
-            title: 'Success',
-            description: data.msg,
-          });
-        },
-      }
-    );
-  }
-  
   return (
     <>
       <DropdownMenu>
@@ -84,7 +66,11 @@ export function DataTableRowActions({
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <DeleteModal loading={deleteCategory.isPending} callback={callback} />
+      <CategoryAlert
+        id={category._id}
+        isCategoryAlertOpened={isCategoryAlertOpened}
+        setCategoryAlert={setCategoryAlert}
+      />
     </>
   );
 }

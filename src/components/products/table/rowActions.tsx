@@ -11,11 +11,9 @@ import {
 
 import { Ellipsis, SquarePen, Trash2 } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import DeleteModal from '@/lib/deleteModal';
-import { useGlobalStore } from '@/store/global';
+import ProductAlert from '@/lib/alerts/ProductAlert';
 import { TProduct } from '@/global';
-import { useDeleteProduct } from '@/apis/products';
-import { toast } from '@/components/ui/use-toast';
+import { useState } from 'react';
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -25,24 +23,7 @@ export function DataTableRowActions({
   row,
 }: DataTableRowActionsProps<TProduct>) {
   const product = row.original;
-  const toggleDeleteModal = useGlobalStore.getState().toggleDeleteModal;
-
-  const deleteProduct = useDeleteProduct();
-
-  function callback() {
-    deleteProduct.mutate(
-      { id: product._id },
-      {
-        onSuccess: (data) => {
-          toggleDeleteModal();
-          toast({
-            title: 'Success',
-            description: data.msg,
-          });
-        },
-      }
-    );
-  }
+  const [isProductAlertOpened, setProductAlert] = useState(false);
 
   return (
     <>
@@ -64,16 +45,17 @@ export function DataTableRowActions({
 
           <DropdownMenuItem
             className='text-destructive focus:bg-destructive/5 focus:text-destructive'
-            onClick={() => toggleDeleteModal()}
+            onClick={() => setProductAlert(true)}
           >
             <Trash2 size={20} className='mr-2' />
             <span className='capitalize'>delete</span>
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <DeleteModal
-        loading={deleteProduct.isPending}
-        callback={callback}
+      <ProductAlert
+        id={product._id}
+        isProductAlertOpened={isProductAlertOpened}
+        setProductAlert={setProductAlert}
       />
     </>
   );

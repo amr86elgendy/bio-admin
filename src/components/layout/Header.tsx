@@ -33,7 +33,7 @@ export default function Header() {
   
   return (
     <nav
-      className={`sticky top-0 left-0 right-0 z-20 h-20 flex items-center justify-between px-8 py-3 transition-shadow duration-200 backdrop-filter backdrop-blur border-b ${
+      className={`sticky top-0 left-0 right-0 z-50 h-20 flex items-center justify-between px-8 py-3 transition-shadow duration-200 backdrop-filter backdrop-blur border-b ${
         fixedNav ? 'shadow-nav' : 'shadow-card'
       }`}
       style={{ backgroundColor: 'rgba(255, 255, 255, 0.5)' }}

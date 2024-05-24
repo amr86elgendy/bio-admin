@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { DataTableColumnHeader } from './table/columnHeader';
 import { DataTableRowActions } from './table/rowActions';
 import { TUser } from '@/global';
+import { BadgeCheck, Ban } from 'lucide-react';
 
 dayjs.extend(relativeTime);
 
@@ -53,9 +54,31 @@ export const columns: ColumnDef<TUser>[] = [
     ),
   },
   {
+    accessorKey: 'blocked',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='blocked' />
+    ),
+    cell: ({ row }) => {
+      const blocked = row.original.blocked;
+      return (
+        <div className='flex items-center justify-center'>
+          {blocked ? <Ban color='red' /> : <BadgeCheck color='green' />}
+        </div>
+      );
+    },
+    filterFn: (row, id, value) => {
+      console.log(value);
+      const newValue = value.map((value: 'blocked' | 'un-blocked') =>
+        value === 'blocked' ? true : false
+      );
+      return newValue.includes(row.getValue(id));
+    },
+    enableSorting: false,
+  },
+  {
     accessorKey: 'createdAt',
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title='subscription time' />
+      <DataTableColumnHeader column={column} title='subscription date' />
     ),
     cell: ({ row }) => {
       const formattedDate = dayjs(row.original.createdAt).fromNow();

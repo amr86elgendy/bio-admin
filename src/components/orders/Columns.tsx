@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { DataTableColumnHeader } from './table/columnHeader';
 import { DataTableRowActions } from './table/rowActions';
 import { TOrder } from '@/global';
+import dayjs from 'dayjs';
 
 export const columns: ColumnDef<TOrder>[] = [
   {
@@ -61,6 +62,22 @@ export const columns: ColumnDef<TOrder>[] = [
     filterFn: (row, id, value) => {
       return value.includes(row.getValue(id));
     },
+  },
+  {
+    accessorKey: 'createdAt',
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title='order date' />
+    ),
+    cell: ({ row }) => {
+      const formattedDate = dayjs(row.original.createdAt).fromNow();
+      return (
+        <span className='font-semibold text-gray-600'>{formattedDate}</span>
+      );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
+    },
+    enableSorting: false,
   },
   {
     id: 'actions',

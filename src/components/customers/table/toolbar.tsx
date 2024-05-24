@@ -27,16 +27,22 @@ export function DataTableToolbar<TData>({
           }
           className='h-8 w-[150px] lg:w-[250px]'
         />
-        {/* {table.getColumn('company') && (
+        {table.getColumn('blocked') && (
           <DataTableFacetedFilter
-            column={table.getColumn('company')}
-            title='company'
-            options={APP_COMPANIES.map((company) => ({
-              label: company,
-              value: company,
-            }))}
+            column={table.getColumn('blocked')}
+            title='blocked'
+            options={[
+              {
+                label: 'blocked',
+                value: 'blocked',
+              },
+              {
+                label: 'un-blocked',
+                value: 'un-blocked',
+              },
+            ]}
           />
-        )} */}
+        )}
         {/* {table.getColumn('itemForm') && (
           <DataTableFacetedFilter
             column={table.getColumn('itemForm')}

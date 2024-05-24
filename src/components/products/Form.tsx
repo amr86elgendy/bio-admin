@@ -201,7 +201,7 @@ console.log(dirtyValues, values, form.formState.touchedFields);
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder='Select a category' />
+                        <SelectValue placeholder='Select a company' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -289,7 +289,7 @@ console.log(dirtyValues, values, form.formState.touchedFields);
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder='Select a category' />
+                        <SelectValue placeholder='Select a form' />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>

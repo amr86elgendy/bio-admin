@@ -12,10 +12,8 @@ import {
 import { Ban, Circle, Ellipsis, SquarePen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { TUser } from '@/global';
-import DeleteModal from '@/lib/deleteModal';
-import { useBlockUser } from '@/apis/customers';
-import { useGlobalStore } from '@/store/global';
-import { toast } from '@/components/ui/use-toast';
+import BlockCustomerAlert from '@/lib/alerts/BlockCustomerAlert';
+import { useState } from 'react';
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
@@ -23,24 +21,8 @@ interface DataTableRowActionsProps<TData> {
 
 export function DataTableRowActions({ row }: DataTableRowActionsProps<TUser>) {
   const user = row.original;
-  const blockUser = useBlockUser();
-
-  const toggleDeleteModal = useGlobalStore.getState().toggleDeleteModal;
-
-  function callback() {
-    blockUser.mutate(
-      { id: user._id, blocked: !user.blocked },
-      {
-        onSuccess: (data) => {
-          toggleDeleteModal();
-          toast({
-            title: 'Success',
-            description: data.msg,
-          });
-        },
-      }
-    );
-  }
+  const [isBlockCustomerAlertOpened, setBlockCustomerAlert] =
+    useState(false);
 
   return (
     <>
@@ -62,7 +44,7 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps<TUser>) {
 
           <DropdownMenuItem
             className='text-destructive focus:bg-destructive/5 focus:text-destructive'
-            onClick={() => toggleDeleteModal()}
+            onClick={() => setBlockCustomerAlert(true)}
           >
             {user.blocked ? (
               <Circle size={20} className='mr-2' />
@@ -75,10 +57,11 @@ export function DataTableRowActions({ row }: DataTableRowActionsProps<TUser>) {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <DeleteModal
-        loading={blockUser.isPending}
-        callback={callback}
-        warningMessage='Blocking a user restricts their access and communication with you. Ensure this action is necessary and justified.'
+      <BlockCustomerAlert
+        id={user._id}
+        blocked={user.blocked}
+        isBlockCustomerAlertOpened={isBlockCustomerAlertOpened}
+        setBlockCustomerAlert={setBlockCustomerAlert}
       />
     </>
   );
