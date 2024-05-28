@@ -27,8 +27,6 @@ export const columns: ColumnDef<TOrder>[] = [
       );
     },
     filterFn: (row, id, value) => {
-      console.log({ row, id, value });
-
       return row.original.user.name.includes(value);
     },
     enableSorting: false,

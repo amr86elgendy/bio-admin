@@ -1,19 +1,23 @@
-import { Link } from 'react-router-dom';
-import { Plus } from 'lucide-react';
-
+import { Link, useSearchParams } from 'react-router-dom';
+import { Loader, Plus } from 'lucide-react';
+// UI
 import { columns } from './Columns';
 import { DataTable } from './table';
 import LoaderComponent from '../ui/loader';
 import { Button } from '../ui/button';
-
+// Utils
 import { useGetProducts } from '@/apis/products';
 
 export default function ProductsPage() {
-  const productsQuery = useGetProducts();
-  if (productsQuery.isPending) return <LoaderComponent />;
+  const [searchParams] = useSearchParams();
+  const productsQuery = useGetProducts(
+    Object.fromEntries(searchParams.entries())
+  );
+  if (productsQuery.isLoading) return <LoaderComponent />;
   if (productsQuery.isError) return <div>error</div>;
 
-  const products = productsQuery.data.pages.flatMap((page) => page.products);
+  const products =
+    productsQuery.data?.pages.flatMap((page) => page.products) ?? [];
 
   return (
     <>
@@ -27,7 +31,18 @@ export default function ProductsPage() {
             </Link>
           </Button>
         </div>
-        <DataTable data={products} columns={columns} />
+        <DataTable
+          data={products}
+          columns={columns}
+          isPlaceholderData={productsQuery.isPlaceholderData}
+          fetchNextPage={productsQuery.fetchNextPage}
+          hasNextPage={productsQuery.hasNextPage}
+        />
+        {productsQuery.hasNextPage && productsQuery.isFetchingNextPage && (
+          <div className='flex justify-center items-center'>
+            {<Loader className='animate-spin' size={30} />}
+          </div>
+        )}
       </div>
     </>
   );

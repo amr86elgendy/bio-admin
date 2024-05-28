@@ -1,10 +1,10 @@
 import { Link } from 'react-router-dom';
 import { useFormContext } from 'react-hook-form';
 import { Eye, Trash2 } from 'lucide-react';
-
+// UI
 import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Button } from '../ui/button';
-
+// Utils
 import { formatBytes } from '@/lib/utils';
 
 type TImage = {

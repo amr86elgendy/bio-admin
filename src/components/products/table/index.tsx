@@ -9,11 +9,12 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-
+import { Loader } from 'lucide-react';
+import { useInView } from 'react-intersection-observer';
+// UI
 import {
   Table,
   TableBody,
@@ -22,19 +23,24 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-
-import { DataTablePagination } from './pagination';
 import { DataTableToolbar } from './toolbar';
+// Utils
 import { cn } from '@/lib/utils';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isPlaceholderData: boolean;
+  fetchNextPage: () => void;
+  hasNextPage: boolean | undefined;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isPlaceholderData,
+  fetchNextPage,
+  hasNextPage,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
@@ -60,16 +66,29 @@ export function DataTable<TData, TValue>({
     onColumnVisibilityChange: setColumnVisibility,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  const { ref: inViewRef, inView } = useInView({ threshold: 1 });
+
+  React.useEffect(() => {
+    if (inView && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView]);
+  console.log('data', data);
+
   return (
     <div className='space-y-4'>
       <DataTableToolbar table={table} />
-      <div className='rounded-md border'>
+      <div className='rounded-md border relative'>
+        {isPlaceholderData && (
+          <div className='absolute inset-0 z-10 bg-white/60 flex items-center justify-center'>
+            <Loader className='animate-spin' />
+          </div>
+        )}
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -97,10 +116,11 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
+              table.getRowModel().rows.map((row, idx, arr) => (
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && 'selected'}
+                  ref={idx === arr.length - 1 ? inViewRef : null}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
@@ -130,7 +150,11 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <DataTablePagination table={table} />
+      <div className='flex items-center justify-between px-2'>
+        <div className='flex-1 text-sm text-muted-foreground'>
+          {table.getFilteredRowModel().rows.length} rows found.
+        </div>
+      </div>
     </div>
   );
 }

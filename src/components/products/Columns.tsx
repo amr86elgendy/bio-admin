@@ -1,9 +1,9 @@
 import { ColumnDef } from '@tanstack/react-table';
-
+// UI
 import { Badge } from '@/components/ui/badge';
-
 import { DataTableColumnHeader } from './table/columnHeader';
 import { DataTableRowActions } from './table/rowActions';
+// Utils
 import { TProduct } from '@/global';
 
 export const columns: ColumnDef<TProduct>[] = [

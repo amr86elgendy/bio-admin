@@ -1,4 +1,5 @@
 import {
+  keepPreviousData,
   useInfiniteQuery,
   useMutation,
   useQuery,
@@ -40,6 +41,7 @@ export function useGetProducts(props?: any) {
   return useInfiniteQuery({
     queryKey: ['get-products', props],
     queryFn: ({ pageParam }) => getProducts({ pageParam, ...props }),
+    placeholderData: keepPreviousData,
     initialPageParam: 1,
     getNextPageParam: ({ currentPage, lastPage }) => {
       if (currentPage < lastPage) {

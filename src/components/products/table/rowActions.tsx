@@ -1,5 +1,8 @@
+import { useState } from 'react';
 import { Row } from '@tanstack/react-table';
-
+import { Link } from 'react-router-dom';
+import { Ellipsis, SquarePen, Trash2 } from 'lucide-react';
+// UI
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -8,12 +11,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-import { Ellipsis, SquarePen, Trash2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import ProductAlert from '@/lib/alerts/ProductAlert';
+// Utils
 import { TProduct } from '@/global';
-import { useState } from 'react';
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;

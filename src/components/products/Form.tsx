@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import ReactSelect from 'react-select';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-
+// UI
 import { Button } from '../ui/button';
 import {
   Form,
@@ -26,7 +26,7 @@ import {
 } from '../ui/select';
 import { Checkbox } from '../ui/checkbox';
 import UploadImage from './UploadImage';
-
+// Utils
 import { useGetCategories } from '@/apis/categories';
 import { APP_COMPANIES, DOSAGE_FORMS } from '@/constants';
 import {
@@ -134,7 +134,6 @@ export default function ProductForm() {
 
   const onSubmit = (values: z.infer<typeof productSchema>) => {
     const dirtyValues = getDirtyFields(values, form.formState.dirtyFields);
-console.log(dirtyValues, values, form.formState.touchedFields);
 
     const data = {
       ...dirtyValues,

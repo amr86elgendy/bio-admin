@@ -41,7 +41,6 @@ export default function BlockCustomerAlert({
       }
     );
   }
-  console.log('run', id, blocked);
 
   return (
     <AlertDialog

@@ -67,7 +67,6 @@ export const columns: ColumnDef<TUser>[] = [
       );
     },
     filterFn: (row, id, value) => {
-      console.log(value);
       const newValue = value.map((value: 'blocked' | 'un-blocked') =>
         value === 'blocked' ? true : false
       );

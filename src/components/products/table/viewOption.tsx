@@ -1,6 +1,6 @@
-import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
 import { Table } from '@tanstack/react-table';
-
+import { Settings2 } from 'lucide-react';
+// UI
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -8,8 +8,8 @@ import {
   DropdownMenuContent,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Settings2 } from 'lucide-react';
 
 interface DataTableViewOptionsProps<TData> {
   table: Table<TData>;

@@ -2,11 +2,11 @@ import { useCallback } from 'react';
 import { Loader, UploadCloud } from 'lucide-react';
 import { useFormContext } from 'react-hook-form';
 import { useDropzone } from 'react-dropzone';
-
+// UI
 import { Input } from '../ui/input';
-
-import { useUploadImage } from '@/apis/products';
 import ImagesView from './ImagesView';
+// Utils
+import { useUploadImage } from '@/apis/products';
 
 export default function UploadImage() {
   const { setValue, getValues } = useFormContext();
