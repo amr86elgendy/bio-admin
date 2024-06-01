@@ -1,21 +1,50 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { request } from '../client';
 import { TUser } from '@/global';
 
 // ####################### Get Users #######################
 type GetUsersReturnType = {
+  currentPage: number;
+  lastPage: number;
   users: TUser[];
+  totalCount: number;
 };
 
-const getUsers = async (): Promise<GetUsersReturnType> => {
-  const { data } = await request({ url: '/users' });
+const getUsers = async ({
+  pageParam,
+  ...rest
+}: {
+  pageParam: number;
+}): Promise<GetUsersReturnType> => {
+  const params = { page: pageParam, ...rest };
+
+  const { data } = await request({
+    url: 'users',
+    method: 'GET',
+    params,
+  });
   return data;
 };
 
-export function useGetUsers() {
-  return useQuery({
-    queryKey: ['get-users'],
-    queryFn: getUsers,
+export function useGetUsers(props?: any) {
+  return useInfiniteQuery({
+    queryKey: ['get-users', props],
+    queryFn: ({ pageParam }) => getUsers({ pageParam, ...props }),
+    placeholderData: keepPreviousData,
+    initialPageParam: 1,
+    getNextPageParam: ({ currentPage, lastPage }) => {
+      if (currentPage < lastPage) {
+        return currentPage + 1;
+      } else {
+        return undefined;
+      }
+    },
   });
 }
 

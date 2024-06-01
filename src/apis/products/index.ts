@@ -5,7 +5,6 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import qs from 'query-string';
 import { request } from '../client';
 import { TProduct } from '@/global';
 
@@ -23,16 +22,12 @@ const getProducts = async ({
 }: {
   pageParam: number;
 }): Promise<GetProductsReturnType> => {
-  const queryStr = qs.stringify(rest, {
-    arrayFormat: 'bracket',
-    skipEmptyString: true,
-    skipNull: true,
-  });
-  // console.log({ pageParam, rest });
+  const params = { page: pageParam, ...rest };
 
   const { data } = await request({
-    url: `products?page=${pageParam}&${queryStr}`,
+    url: 'products',
     method: 'GET',
+    params
   });
   return data;
 };

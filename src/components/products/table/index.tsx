@@ -78,7 +78,6 @@ export function DataTable<TData, TValue>({
       fetchNextPage();
     }
   }, [inView]);
-  console.log('data', data);
 
   return (
     <div className='space-y-4'>

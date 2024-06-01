@@ -1,5 +1,7 @@
 import { Row } from '@tanstack/react-table';
-
+import { Link } from 'react-router-dom';
+import { Ellipsis, SquarePen, Trash2 } from 'lucide-react';
+// UI
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -8,11 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-
-import { Ellipsis, SquarePen, Trash2 } from 'lucide-react';
-import { Link } from 'react-router-dom';
-// import { DeleteOrderModal } from '@/lib/deleteModal';
-import { useGlobalStore } from '@/store/global';
+// Utils
 import { TOrder } from '@/global';
 
 interface DataTableRowActionsProps<TData> {
@@ -23,7 +21,6 @@ export function DataTableRowActions({
   row,
 }: DataTableRowActionsProps<TOrder>) {
   const order = row.original
-  // const toggleDeleteModal = useGlobalStore.getState().toggleDeleteModal;
 
   return (
     <>

@@ -1,11 +1,11 @@
 import { ColumnDef } from '@tanstack/react-table';
-
+import dayjs from 'dayjs';
+// UI
 import { Badge } from '@/components/ui/badge';
-
 import { DataTableColumnHeader } from './table/columnHeader';
 import { DataTableRowActions } from './table/rowActions';
+// Utils
 import { TOrder } from '@/global';
-import dayjs from 'dayjs';
 
 export const columns: ColumnDef<TOrder>[] = [
   {
@@ -26,9 +26,6 @@ export const columns: ColumnDef<TOrder>[] = [
         </div>
       );
     },
-    filterFn: (row, id, value) => {
-      return row.original.user.name.includes(value);
-    },
     enableSorting: false,
     enableHiding: false,
   },
@@ -38,9 +35,6 @@ export const columns: ColumnDef<TOrder>[] = [
       <DataTableColumnHeader column={column} title='status' />
     ),
     cell: ({ row }) => <Badge variant='outline'>{row.original.status}</Badge>,
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
     enableSorting: false,
   },
 
@@ -57,9 +51,6 @@ export const columns: ColumnDef<TOrder>[] = [
 
       return <span className='font-semibold text-gray-700'>{formatted}</span>;
     },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
-    },
   },
   {
     accessorKey: 'createdAt',
@@ -71,9 +62,6 @@ export const columns: ColumnDef<TOrder>[] = [
       return (
         <span className='font-semibold text-gray-600'>{formattedDate}</span>
       );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
     },
     enableSorting: false,
   },

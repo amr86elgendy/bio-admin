@@ -1,10 +1,10 @@
 import {
+  keepPreviousData,
   useInfiniteQuery,
   useMutation,
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import qs from 'query-string';
 import { request } from '../client';
 import { TOrder } from '@/global';
 
@@ -22,16 +22,11 @@ const getOrders = async ({
 }: {
   pageParam: number;
 }): Promise<GetOrdersReturnType> => {
-  const queryStr = qs.stringify(rest, {
-    arrayFormat: 'bracket',
-    skipEmptyString: true,
-    skipNull: true,
-  });
-  // console.log({ pageParam, rest });
-
+  const params = { page: pageParam, ...rest };
   const { data } = await request({
-    url: `orders?page=${pageParam}&${queryStr}`,
+    url: 'orders',
     method: 'GET',
+    params,
   });
   return data;
 };
@@ -40,6 +35,7 @@ export function useGetOrders(props?: any) {
   return useInfiniteQuery({
     queryKey: ['get-orders', props],
     queryFn: ({ pageParam }) => getOrders({ pageParam, ...props }),
+    placeholderData: keepPreviousData,
     initialPageParam: 1,
     getNextPageParam: ({ currentPage, lastPage }) => {
       if (currentPage < lastPage) {

@@ -66,12 +66,6 @@ export const columns: ColumnDef<TUser>[] = [
         </div>
       );
     },
-    filterFn: (row, id, value) => {
-      const newValue = value.map((value: 'blocked' | 'un-blocked') =>
-        value === 'blocked' ? true : false
-      );
-      return newValue.includes(row.getValue(id));
-    },
     enableSorting: false,
   },
   {
@@ -84,9 +78,6 @@ export const columns: ColumnDef<TUser>[] = [
       return (
         <span className='font-semibold text-gray-600'>{formattedDate}</span>
       );
-    },
-    filterFn: (row, id, value) => {
-      return value.includes(row.getValue(id));
     },
     enableSorting: false,
   },

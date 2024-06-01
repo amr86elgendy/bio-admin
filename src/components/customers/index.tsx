@@ -1,27 +1,36 @@
-import { Link } from 'react-router-dom';
-import { Plus } from 'lucide-react';
-
+import { Loader } from 'lucide-react';
+// UI
 import { columns } from './Columns';
 import { DataTable } from './table';
 import LoaderComponent from '../ui/loader';
-import { Button } from '../ui/button';
-
+// Utils
 import { useGetUsers } from '@/apis/customers';
+import useGetSearchParams from '@/hooks/useGetSearchParams';
 
 export default function CustomersPage() {
-  const usersQuery = useGetUsers();
-  if (usersQuery.isPending) return <LoaderComponent />;
+  const params = useGetSearchParams();
+  const usersQuery = useGetUsers(params);
+  if (usersQuery.isLoading) return <LoaderComponent />;
   if (usersQuery.isError) return <div>error</div>;
 
-  // const products = usersQuery.data.pages.flatMap((page) => page.products);
+  const users = usersQuery.data?.pages.flatMap((page) => page.users) ?? [];
 
   return (
-    <>
-      <div className='hidden h-full flex-1 flex-col space-y-8 md:flex'>
-        <h2 className='capitalize'>customer list</h2>
+    <div className='hidden h-full flex-1 flex-col space-y-8 md:flex'>
+      <h2 className='capitalize'>customer list</h2>
 
-        <DataTable data={usersQuery.data.users} columns={columns} />
-      </div>
-    </>
+      <DataTable
+        data={users}
+        columns={columns}
+        isPlaceholderData={usersQuery.isPlaceholderData}
+        fetchNextPage={usersQuery.fetchNextPage}
+        hasNextPage={usersQuery.hasNextPage}
+      />
+      {usersQuery.hasNextPage && usersQuery.isFetchingNextPage && (
+        <div className='flex justify-center items-center'>
+          {<Loader className='animate-spin' size={30} />}
+        </div>
+      )}
+    </div>
   );
 }

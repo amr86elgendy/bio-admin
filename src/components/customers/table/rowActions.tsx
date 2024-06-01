@@ -1,4 +1,7 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Row } from '@tanstack/react-table';
+import { Ban, Circle, Ellipsis, SquarePen } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -9,11 +12,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-import { Ban, Circle, Ellipsis, SquarePen } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import { TUser } from '@/global';
 import BlockCustomerAlert from '@/lib/alerts/BlockCustomerAlert';
-import { useState } from 'react';
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>;

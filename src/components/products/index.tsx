@@ -1,4 +1,4 @@
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Loader, Plus } from 'lucide-react';
 // UI
 import { columns } from './Columns';
@@ -7,12 +7,12 @@ import LoaderComponent from '../ui/loader';
 import { Button } from '../ui/button';
 // Utils
 import { useGetProducts } from '@/apis/products';
+import useGetSearchParams from '@/hooks/useGetSearchParams';
 
 export default function ProductsPage() {
-  const [searchParams] = useSearchParams();
-  const productsQuery = useGetProducts(
-    Object.fromEntries(searchParams.entries())
-  );
+  const params = useGetSearchParams();
+  const productsQuery = useGetProducts(params);
+
   if (productsQuery.isLoading) return <LoaderComponent />;
   if (productsQuery.isError) return <div>error</div>;
 

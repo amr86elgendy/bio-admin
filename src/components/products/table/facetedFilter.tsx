@@ -1,7 +1,6 @@
 import { Column } from '@tanstack/react-table';
 import { useSearchParams } from 'react-router-dom';
 import { Check, CirclePlus } from 'lucide-react';
-import qs from 'query-string';
 // UI
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -39,14 +38,7 @@ export function DataTableFacetedFilter<TData, TValue>({
   options,
 }: DataTableFacetedFilterProps<TData, TValue>) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const selectedValues = searchParams.get(column?.id ?? '')?.split(',');
-
-  function clearFilter(column: string) {
-    const params = Object.fromEntries(searchParams.entries());
-    delete params[column];
-    setSearchParams(params);
-  }
-
+  const selectedValues = searchParams.getAll(column?.id ?? '');
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -72,7 +64,9 @@ export function DataTableFacetedFilter<TData, TValue>({
                   </Badge>
                 ) : (
                   options
-                    .filter((option) => selectedValues.includes(option.value))
+                    .filter((option) =>
+                      searchParams.has(column?.id ?? '', option.value)
+                    )
                     .map((option) => (
                       <Badge
                         variant='secondary'
@@ -95,38 +89,21 @@ export function DataTableFacetedFilter<TData, TValue>({
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
               {options.map((option) => {
-                const facetSearchValue = searchParams.get(column?.id || '');
-                const isSelected =
-                  facetSearchValue?.split(',').includes(option.value) ?? false;
+                const isSelected = searchParams.has(
+                  column?.id ?? '',
+                  option.value
+                );
                 return (
                   <CommandItem
                     key={option.value}
                     value={option.value}
                     onSelect={() => {
-                      if (column) {
-                        let params: string[] = [];
-                        if (isSelected) {
-                          params = searchParams
-                            .get(column.id)!
-                            .split(',')
-                            .filter((v) => v !== option.value);
-                        } else {
-                          params = [
-                            ...searchParams.getAll(column.id),
-                            option.value,
-                          ];
-                        }
-                        const urlSearchParams = qs.stringify(
-                          {
-                            ...Object.fromEntries(searchParams.entries()),
-                            [column.id]: params,
-                          },
-                          {
-                            arrayFormat: 'comma',
-                          }
-                        );
-                        setSearchParams(urlSearchParams);
+                      if (isSelected) {
+                        searchParams.delete(column?.id ?? '', option.value);
+                      } else {
+                        searchParams.append(column?.id ?? '', option.value);
                       }
+                      setSearchParams(searchParams);
                     }}
                   >
                     <div
@@ -147,12 +124,15 @@ export function DataTableFacetedFilter<TData, TValue>({
                 );
               })}
             </CommandGroup>
-            {selectedValues && selectedValues?.length > 0 && (
+            {selectedValues && selectedValues.length > 0 && (
               <>
                 <CommandSeparator />
                 <CommandGroup>
                   <CommandItem
-                    onSelect={() => clearFilter(column?.id ?? '')}
+                    onSelect={() => {
+                      searchParams.delete(column?.id ?? '');
+                      setSearchParams(searchParams);
+                    }}
                     className='justify-center text-center'
                   >
                     Clear filters
