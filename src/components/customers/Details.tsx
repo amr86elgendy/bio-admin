@@ -1,20 +1,19 @@
-import React from 'react'
-import { Button } from '../ui/button';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Undo2 } from 'lucide-react';
+// UI
+import { Button } from '../ui/button';
 
 export default function UserDetails() {
+  const navigate = useNavigate();
   return (
-    <div className='space-y-8'>
+    <section className='space-y-8 md:w-3/4 m-auto'>
       <div className='flex justify-between items-center'>
-        <Button asChild>
-          <Link to='/customers' className='space-x-2'>
-            <Undo2 />
-            <span className='capitalize'>back to customers</span>
-          </Link>
+        <Button className='space-x-2' onClick={() => navigate(-1)}>
+          <Undo2 />
+          <span className='capitalize'>back to customers</span>
         </Button>
       </div>
       customer details
-    </div>
+    </section>
   );
 }

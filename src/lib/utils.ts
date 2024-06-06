@@ -1,9 +1,9 @@
-import { type ClassValue, clsx } from "clsx"
-import { FieldValues } from "react-hook-form";
-import { twMerge } from "tailwind-merge"
+import { type ClassValue, clsx } from 'clsx';
+import { FieldValues } from 'react-hook-form';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return twMerge(clsx(inputs));
 }
 
 export function formatBytes(bytes: number, decimals = 2) {
@@ -16,6 +16,13 @@ export function formatBytes(bytes: number, decimals = 2) {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
   return `${parseFloat((bytes / Math.pow(k, i)).toFixed(dm))} ${sizes[i]}`;
+}
+
+export function formatPrice(price: number) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'EGP',
+  }).format(price);
 }
 
 export const getDirtyFields = <T extends FieldValues>(

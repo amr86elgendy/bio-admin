@@ -71,7 +71,7 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
-  const { ref: inViewRef, inView } = useInView({ threshold: 1 });
+  const { ref: inViewRef, inView } = useInView({ threshold: 0.5 });
 
   React.useEffect(() => {
     if (inView && hasNextPage) {

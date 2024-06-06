@@ -11,9 +11,8 @@ export const DOSAGE_FORMS = [
 
 export const ORDER_STATUS = [
   'pending',
-  'failed',
-  'paid',
-  'shipped',
+  'processing',
+  'shipping',
   'delivered',
   'canceled',
 ] as const;

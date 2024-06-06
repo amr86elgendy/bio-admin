@@ -79,6 +79,18 @@
   h2 {
     @apply text-xl sm:text-3xl font-semibold
   }
+  h3 {
+    @apply text-xl sm:text-3xl font-semibold
+  }
+  h4 {
+    @apply text-lg sm:text-xl font-semibold
+  }
+  h5 {
+    @apply text-base sm:text-lg font-semibold
+  }
+  h6 {
+    @apply text-sm sm:text-base font-medium
+  }
 }
 
 .link:hover a::before,

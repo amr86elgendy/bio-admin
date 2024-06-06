@@ -25,16 +25,19 @@ export function DataTableToolbar<TData>({
   );
 
   useEffect(() => {
-    let params: Record<string, string> = Object.fromEntries(
-      searchParams.entries()
-    );
     if (debouncedSearch) {
-      params = { ...params, name: debouncedSearch };
+      searchParams.set('name', debouncedSearch);
     } else {
-      delete params.name;
+      searchParams.delete('name');
     }
-    setSearchParams(params);
+    setSearchParams(searchParams);
   }, [debouncedSearch]);
+
+  useEffect(() => {
+    if (!searchParams.has('name')) {
+      setSearchValue('');
+    }
+  }, [searchParams]);
 
   return (
     <div className='flex items-center justify-between'>
@@ -58,7 +61,7 @@ export function DataTableToolbar<TData>({
         {searchParams.size > 0 && (
           <Button
             variant='ghost'
-            onClick={() => setSearchParams(undefined)}
+            onClick={() => setSearchParams({})}
             className='h-8 px-2 lg:px-3'
           >
             Reset

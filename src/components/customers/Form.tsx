@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Undo2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -78,13 +78,11 @@ export default function UserForm() {
   // console.log('form values', form.watch());
 
   return (
-    <>
+    <section className='md:w-3/4 m-auto'>
       <div className='flex justify-between items-center'>
-        <Button asChild>
-          <Link to='/customers' className='space-x-2'>
-            <Undo2 />
-            <span className='capitalize'>back to customers</span>
-          </Link>
+        <Button className='space-x-2' onClick={() => navigate(-1)}>
+          <Undo2 />
+          <span className='capitalize'>back to customers</span>
         </Button>
       </div>
 
@@ -123,6 +121,6 @@ export default function UserForm() {
           <Button type='submit'>Submit</Button>
         </form>
       </Form>
-    </>
+    </section>
   );
 }

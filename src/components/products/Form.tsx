@@ -163,13 +163,11 @@ export default function ProductForm() {
   // console.log('form values', form.watch());
 
   return (
-    <div className='space-y-8'>
+    <section className='space-y-8 md:w-3/4 m-auto'>
       <div className='flex justify-between items-center'>
-        <Button asChild>
-          <Link to='/products' className='space-x-2'>
-            <Undo2 />
-            <span className='capitalize'>back to products</span>
-          </Link>
+        <Button className='space-x-2' onClick={() => navigate(-1)}>
+          <Undo2 />
+          <span className='capitalize'>back to products</span>
         </Button>
       </div>
 
@@ -394,6 +392,6 @@ export default function ProductForm() {
           </Button>
         </form>
       </Form>
-    </div>
+    </section>
   );
 }
