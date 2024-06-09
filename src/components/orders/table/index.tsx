@@ -26,6 +26,7 @@ import {
 import { DataTableToolbar } from './toolbar';
 // Utils
 import { cn } from '@/lib/utils';
+import WhiteOverlay from '@/lib/whiteOverlay';
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -83,11 +84,7 @@ export function DataTable<TData, TValue>({
     <div className='space-y-4'>
       <DataTableToolbar table={table} />
       <div className='rounded-md border'>
-        {isPlaceholderData && (
-          <div className='absolute inset-0 z-10 bg-white/60 flex items-center justify-center'>
-            <Loader className='animate-spin' />
-          </div>
-        )}
+        {isPlaceholderData && <WhiteOverlay />}
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

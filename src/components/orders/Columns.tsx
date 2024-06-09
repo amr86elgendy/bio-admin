@@ -1,11 +1,11 @@
 import { ColumnDef } from '@tanstack/react-table';
-import dayjs from 'dayjs';
 // UI
 import { Badge } from '@/components/ui/badge';
 import { DataTableColumnHeader } from './table/columnHeader';
 import { DataTableRowActions } from './table/rowActions';
 // Utils
 import { TOrder } from '@/global';
+import { formatDistanceToNow } from 'date-fns';
 
 export const columns: ColumnDef<TOrder>[] = [
   {
@@ -58,7 +58,7 @@ export const columns: ColumnDef<TOrder>[] = [
       <DataTableColumnHeader column={column} title='order date' />
     ),
     cell: ({ row }) => {
-      const formattedDate = dayjs(row.original.createdAt).fromNow();
+      const formattedDate = formatDistanceToNow(row.original.createdAt);
       return (
         <span className='font-semibold text-gray-600'>{formattedDate}</span>
       );

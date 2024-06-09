@@ -23,7 +23,7 @@ export default function ProductsPage() {
     <>
       <div className='hidden h-full flex-1 flex-col space-y-8 md:flex'>
         <div className='flex justify-between items-center'>
-          <h2 className='capitalize'>product list</h2>
+          <h2 className='capitalize font-bold tracking-tight'>product list</h2>
           <Button asChild>
             <Link to='/products/create' className='space-x-2'>
               <Plus strokeWidth={3} />

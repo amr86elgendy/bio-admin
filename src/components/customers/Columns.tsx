@@ -1,6 +1,4 @@
 import { ColumnDef } from '@tanstack/react-table';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { Badge } from '@/components/ui/badge';
 
@@ -8,8 +6,7 @@ import { DataTableColumnHeader } from './table/columnHeader';
 import { DataTableRowActions } from './table/rowActions';
 import { TUser } from '@/global';
 import { BadgeCheck, Ban } from 'lucide-react';
-
-dayjs.extend(relativeTime);
+import { formatDistanceToNow } from 'date-fns';
 
 export const columns: ColumnDef<TUser>[] = [
   {
@@ -74,7 +71,7 @@ export const columns: ColumnDef<TUser>[] = [
       <DataTableColumnHeader column={column} title='subscription date' />
     ),
     cell: ({ row }) => {
-      const formattedDate = dayjs(row.original.createdAt).fromNow();
+      const formattedDate = formatDistanceToNow(row.original.createdAt);
       return (
         <span className='font-semibold text-gray-600'>{formattedDate}</span>
       );

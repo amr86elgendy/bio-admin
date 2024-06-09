@@ -18,5 +18,5 @@ export const navLinks = [
     path: 'customers',
     icon: Users,
   },
-  { id: 6, label: 'messages', path: 'messages', icon: MessagesSquare },
+  // { id: 6, label: 'messages', path: 'messages', icon: MessagesSquare },
 ];

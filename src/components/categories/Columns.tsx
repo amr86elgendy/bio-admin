@@ -1,12 +1,9 @@
 import { ColumnDef } from '@tanstack/react-table';
-import dayjs from 'dayjs';
-import relativeTime from 'dayjs/plugin/relativeTime';
 
 import { DataTableColumnHeader } from './table/columnHeader';
 import { DataTableRowActions } from './table/rowActions';
 import { TCategory } from '@/global';
 
-dayjs.extend(relativeTime);
 
 export const columns: ColumnDef<TCategory>[] = [
   {

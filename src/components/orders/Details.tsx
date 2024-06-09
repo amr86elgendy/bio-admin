@@ -6,7 +6,7 @@ import LoaderComponent from '../ui/loader';
 import OrderItem from './OrderItem';
 import { Separator } from '../ui/separator';
 import { formatPrice } from '@/lib/utils';
-import dayjs from 'dayjs';
+import { formatDate } from 'date-fns';
 
 export default function OrderDetails() {
   const params = useParams();
@@ -31,7 +31,7 @@ export default function OrderDetails() {
             <div>
               <h6 className='capitalize text-slate-500'>order date</h6>
               <p className='font-semibold'>
-                {dayjs(orderQuery.data.createdAt).format('MMMM D, YYYY')}
+                {formatDate(orderQuery.data.createdAt, 'PP')}
               </p>
             </div>
             <div className='border-s ps-4 space-y-1'>

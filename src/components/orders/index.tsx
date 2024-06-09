@@ -20,7 +20,7 @@ export default function OrdersPage() {
   return (
     <>
       <div className='hidden h-full flex-1 flex-col space-y-8 md:flex'>
-        <h2 className='capitalize'>order list</h2>
+        <h2 className='capitalize font-bold tracking-tight'>order list</h2>
 
         <DataTable
           data={orders}
